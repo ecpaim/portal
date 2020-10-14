@@ -12,7 +12,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 
 const home = ({username,email, classes}) => {
     return(
-    <div className={classes.homePage}>
+    <div className={classes.standardPage}>
         
         <p>
             Homepage

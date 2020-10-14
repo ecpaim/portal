@@ -5,18 +5,18 @@ export default {
         light: '#448aff',
         main: '#ffffff',
         dark: '#b0bec9',
-        contrastText: '#283593',
+        contrastText: '#283593'
       },
       secondary: {
         light: '#5f5fc4',
         main: '#283593',
         dark: '#001064',
-        contrastText: '#ffffff',
+        contrastText: '#ffffff'
       },
     },
     general: {
-        homePage: {
-            backgroundColor: "#e2f1fc"
+        standardPage: {
+            margin: 20
           },
         visibleSeparator: {
             width: '100%',

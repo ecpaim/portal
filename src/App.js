@@ -9,10 +9,9 @@ import { Link } from 'react-router-dom';
 
 import SideBar from './components/SideBar';
 import home from './pages/home';
+import monte from './pages/bloco';
+import encomenda from './pages/encomenda';
 import possibilidade from './pages/possibilidade';
-
-import Box from '@material-ui/core/Box';
-import Container from '@material-ui/core/Container';
 
 import {
   BrowserRouter as Router,
@@ -80,6 +79,8 @@ function App({username, email, classes}) {
           
               <RouterSwitch>
                 <Route exact path='/' component={home} />
+                <Route exact path='/matricula/bloco' component={monte} />
+                <Route exact path='/matricula/encomenda' component={encomenda} />
                 <Route exact path='/matricula/possibilidade' component={possibilidade} />
               </RouterSwitch>
             

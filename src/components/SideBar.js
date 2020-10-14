@@ -96,13 +96,13 @@ const SideBar = ({classes}) => {
           <Collapse in={open.matricula} timeout="auto" unmountOnExit>
               <List disablePadding>
                 <ListItem button component={Link} to="/matricula/possibilidade">
-                  <ListItemText classes={{secondary:classes.listItemTextSecondary}} secondary="Possibilidade de Matrícula"/>
+                  <ListItemText classes={{secondary:classes.listItemTextSecondary}} secondary="Possibilidade de Matrícula" />
                 </ListItem>
-                <ListItem button >
-                  <ListItemText classes={{secondary:classes.listItemTextSecondary}} secondary="Grade de Horários" />
+                <ListItem button component={Link} to="/matricula/bloco">
+                  <ListItemText classes={{secondary:classes.listItemTextSecondary}} secondary="Monte seu Bloco"/>
                 </ListItem>
-                <ListItem button >
-                  <ListItemText classes={{secondary:classes.listItemTextSecondary}} secondary="Encomenda" />
+                <ListItem button component={Link} to="/matricula/encomenda">
+                  <ListItemText classes={{secondary:classes.listItemTextSecondary}} secondary="Encomenda de Matrícula" />
                 </ListItem>
               </List>
           </Collapse>
