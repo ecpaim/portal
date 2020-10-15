@@ -18,6 +18,12 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import { Typography } from '@material-ui/core';
 
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 import withStyles from '@material-ui/core/styles/withStyles';
 
 import {removeRegistrationBlock} from '../redux/user/userSlice';
@@ -53,7 +59,8 @@ const ROWS = ['1','2','3','4','5','6','7','8','9']
 });
 
 const initialState = {
-    tooMany: false
+    tooMany: false,
+    saveDialog: false
 }
 
 const Encomenda = ({username, email, registrationBlocks, removeRegistrationBlock, classes}) => {
@@ -67,6 +74,12 @@ const Encomenda = ({username, email, registrationBlocks, removeRegistrationBlock
         if(registrationBlocks.length - 1 < 4){
             setState({tooMany:false});
         }
+    }
+    const closeSaveDialog = ()=>{
+        setState({...state, saveDialog: false});
+    }
+    const openSaveDialog = ()=>{
+        setState({...state, saveDialog:true});
     }
 
     return(
@@ -216,12 +229,32 @@ const Encomenda = ({username, email, registrationBlocks, removeRegistrationBlock
             
         </TableContainer>
             <div style={{width:'75%'}}>
-            <Button variant="contained" color="secondary" size='small' className={classes.sendButton} >
+            <Button variant="contained" color="secondary" size='small' className={classes.sendButton} onClick={openSaveDialog} >
                 <Typography>Salvar Encomenda</Typography>
             </Button>
             </div>
             {state.tooMany ? <Typography color='error'>Já existem três blocos adicionados! Exclua um para adicionar outro.</Typography> : null}
         
+
+            <Dialog
+                open={state.saveDialog}
+                onClose={closeSaveDialog}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">{"Encomenda de Matrícula"}</DialogTitle>
+                <DialogContent>
+                    
+                <DialogContentText id="alert-dialog-description">
+                    Sua encomenda de matrícula foi salva!
+                </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={closeSaveDialog} color="secondary" autoFocus>
+                    Close
+                </Button>
+                </DialogActions>
+            </Dialog>
     </div>
   );
 }
