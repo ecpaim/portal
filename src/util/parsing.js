@@ -73,9 +73,12 @@ for(var a = 0; a < allCourses.length; a++){
         let newProfessor = {}
         newProfessor.name = newProfString;
         newProfessor.time = parsed;
+        newProfessor.filter = false;
 
         allCourses[a].professors = [];
         allCourses[a].professors.push(newProfessor)
+
+        allCourses[a].mainFilter = false;
 
         console.log(allCourses[a].professors)
         console.log(allCourses[a].professors[0].time)
@@ -123,6 +126,7 @@ for(var a = 0; a < allCourses.length; a++){
         let newProfessor = {}
         newProfessor.name = newProfString;
         newProfessor.time = parsed;
+        newProfessor.filter = false;
 
         allCourses[lastSubject].professors.push(newProfessor)
     }
@@ -131,9 +135,9 @@ for(var a = 0; a < allCourses.length; a++){
 allCourses = allCourses.filter( i=> i["Atividades de Ensino"] !== '');
 
 let newData = JSON.stringify(allCourses);
-fs.writeFileSync('processedData2.json', newData)
+fs.writeFileSync('processedDataFiltered.json', newData)
 
-let prologue = fs.readFileSync('processedData2.json');
+let prologue = fs.readFileSync('processedDataFiltered.json');
 let prologue2 = JSON.parse(prologue);
 
 //console.log(prologue2[0])

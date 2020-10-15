@@ -61,25 +61,28 @@ const Possibilidade = ({username,email, classes}) => {
                         <TableCell align="center">Plano de Ensino</TableCell>
                     </TableRow>
                 </TableHead>
-                {allData !== null ? allData.map(row => (
-                    <TableRow classes={{root:classes.root}}>
-                        <TableCell align="center" style={{minWidth: 250}} ><Typography variant='caption'>{row["Atividades de Ensino"]}</Typography></TableCell>
-                        <TableCell align="center"><Typography variant='caption'>{row["Créditos"]}</Typography></TableCell>
-                        <TableCell align="center"><Typography variant='caption'>{row["Turmas"]}</Typography></TableCell>
-                        <TableCell align="center"><Typography variant='caption'>{row["Oferecidas Veteranos"]}</Typography></TableCell>
-                        <TableCell align="center"><Typography variant='caption'>{row["Oferecidas Calouros"]}</Typography></TableCell>
-                        <TableCell align="center"><Typography variant='caption'>{row["Horários - Locais - Observações"]}</Typography></TableCell>
-                        <TableCell align="center"><Typography variant='caption'>{row["Professores"]}</Typography></TableCell>
-                        <TableCell align="center">
-                            <Typography variant='caption'>
-                                <IconButton aria-label="imprimir plano de ensino" size="small">
-                                    <PrintIcon fontSize="inherit" />
-                                </IconButton>
-                            </Typography>
-                        </TableCell>
-                    </TableRow>
-                ))
-                : null}
+                <TableBody>
+                    {allData !== null ? allData.map(row => (
+                        <TableRow classes={{root:classes.root}}>
+                            <TableCell align="center" style={{minWidth: 250}} ><Typography variant='caption'>{row["Atividades de Ensino"]}</Typography></TableCell>
+                            <TableCell align="center"><Typography variant='caption'>{row["Créditos"]}</Typography></TableCell>
+                            <TableCell align="center"><Typography variant='caption'>{row["Turmas"]}</Typography></TableCell>
+                            <TableCell align="center"><Typography variant='caption'>{row["Oferecidas Veteranos"]}</Typography></TableCell>
+                            <TableCell align="center"><Typography variant='caption'>{row["Oferecidas Calouros"]}</Typography></TableCell>
+                            <TableCell align="center"><Typography variant='caption'>{row["Horários - Locais - Observações"]}</Typography></TableCell>
+                            <TableCell align="center"><Typography variant='caption'>{row["Professores"]}</Typography></TableCell>
+                            <TableCell align="center">
+                                <Typography variant='caption'>
+                                    <IconButton aria-label="imprimir plano de ensino" size="small">
+                                        <PrintIcon fontSize="inherit" />
+                                    </IconButton>
+                                </Typography>
+                            </TableCell>
+                        </TableRow>
+                    ))
+                    : null}
+                </TableBody>
+               
             </Table>
         </TableContainer>
 

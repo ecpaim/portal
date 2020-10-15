@@ -24,11 +24,15 @@ import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 import Button from '@material-ui/core/Button';
 import { useHistory } from "react-router-dom";
 
-import allData from '../util/processedData2.json';
+import allData from '../util/processedDataFiltered.json';
 
 import {changeEmail, addRegistrationBlock} from '../redux/user/userSlice';
 
@@ -90,6 +94,13 @@ import {changeEmail, addRegistrationBlock} from '../redux/user/userSlice';
       },
       description:{
           padding:5
+      },
+      formControl:{
+        margin: theme.spacing(1),
+      },
+      formText:{
+          marginTop:28,
+          color:'#737373'
       }
 });
 
@@ -117,7 +128,9 @@ for(const subj in just3){
 const initialState = {
     expandButtons: expandSubject,
     openSubjects: false,
-    currentClass: -1,
+    filtered: just3,
+    beginFilter: 'h08',
+    endFilter: 'h18',
     schedule: {
         SEG: {
             h08:{prof:"",subj:"",classID:"", hover:0},
@@ -207,6 +220,55 @@ const Monte = ({username, email, changeEmail, addRegistrationBlock, classes}) =>
     const history = useHistory();
     const [state, setState] = React.useState(initialState);
 
+    const inputFilterBegin = (event) => {
+
+        filterSubjects(event.target.value, state.endFilter);
+    }
+
+    const inputFilterEnd = (event) => {
+     
+        filterSubjects(state.beginFilter, event.target.value);
+    }
+
+    const filterSubjects = (h1,h2) => {
+        let newData = state.filtered;
+        let lowerLimit = HOURS.indexOf(h1);
+        let upperLimit = HOURS.indexOf(h2);
+
+        for(let subject of state.filtered){
+
+            let numberFiltered = 0;
+
+            for(let aClass of subject.professors){
+
+                let error = false;
+
+                for(let day of aClass.time){
+                    let dayIndex = HOURS.indexOf(day.hour);
+                    if(dayIndex < lowerLimit || dayIndex + day.period -1 > upperLimit){
+                        error = true;
+                        break;
+                    }
+                }
+                if(error){
+                    aClass.filter = true;
+                    numberFiltered++;
+                } else {
+                    aClass.filter = false;
+                }
+            }
+
+            if(numberFiltered === subject.professors.length){
+                subject.mainFilter = true;
+            } else {
+                subject.mainFilter = false;
+            }
+        }
+
+        console.log(newData)
+        setState({...state, filtered: newData, beginFilter: h1, endFilter: h2});
+    }
+
     const sendBlock = () => {
         let block = [];
         for(const day of DAYS){
@@ -246,20 +308,15 @@ const Monte = ({username, email, changeEmail, addRegistrationBlock, classes}) =>
     const showClasses = (subject) => {
         let newExpandButtons = {...state.expandButtons};
         newExpandButtons[subject] = !newExpandButtons[subject];
-        let i = 0;
-        for(i=0;i< just3.length; i++){
-            if(just3[i]["Atividades de Ensino"] === subject)
-                break      
-        }
         
-        setState({ ...state, currentClass: i, expandButtons: newExpandButtons });
+        setState({ ...state, expandButtons: newExpandButtons });
     };
     // The spread operator makes deep copies of data IF the data is not nested
     const addSubject = (professorsName, subjectName) => {
         let newSchedule = {...state.schedule};
         let error = false;
 
-        just3[idx[subjectName]].professors.filter(i => (i.name === professorsName))[0].time.map(dayObj => {
+        state.filtered[idx[subjectName]].professors.filter(i => (i.name === professorsName))[0].time.map(dayObj => {
             if( state.schedule[dayObj.day][dayObj.hour].hover === 2){
                 error = true;
             }
@@ -267,7 +324,7 @@ const Monte = ({username, email, changeEmail, addRegistrationBlock, classes}) =>
 
         if(!error){
             let tmp = professorsName.split('-');
-            just3[idx[subjectName]].professors.filter(i => (i.name === professorsName))[0].time.map(dayObj => {
+            state.filtered[idx[subjectName]].professors.filter(i => (i.name === professorsName))[0].time.map(dayObj => {
                 for(var j = 0; j < dayObj.period;j++){
                     if(HOURS.indexOf(dayObj.hour)+j > HOURS.length-1){
                         continue; // class ends too late, not implemented yet
@@ -300,7 +357,7 @@ const Monte = ({username, email, changeEmail, addRegistrationBlock, classes}) =>
 
         let newSchedule = {...state.schedule};
         let error = false;
-        just3[idx[subjectName]].professors.filter(i => (i.name === professorsName))[0].time.map(dayObj => {
+        state.filtered[idx[subjectName]].professors.filter(i => (i.name === professorsName))[0].time.map(dayObj => {
             let tmp = professorsName.split('-');
 
             for(var j = 0; j < dayObj.period;j++){
@@ -309,7 +366,7 @@ const Monte = ({username, email, changeEmail, addRegistrationBlock, classes}) =>
                 }
                 let currentPeriod = HOURS[HOURS.indexOf(dayObj.hour)+j];
 
-                console.log('current period: '+currentPeriod)
+                
                 // can't mark itself as red
                 if(state.schedule[dayObj.day][currentPeriod].classID === tmp[1] && state.schedule[dayObj.day][currentPeriod].subj === subjectName){
                     error=true;
@@ -330,7 +387,7 @@ const Monte = ({username, email, changeEmail, addRegistrationBlock, classes}) =>
     const deleteSkeleton = (professorsName, subjectName) => {
         let newSchedule = {...state.schedule};
 
-        just3[idx[subjectName]].professors.filter(i => (i.name === professorsName))[0].time.map(dayObj => {
+        state.filtered[idx[subjectName]].professors.filter(i => (i.name === professorsName))[0].time.map(dayObj => {
             for(var j = 0; j < dayObj.period;j++){
                 if(HOURS.indexOf(dayObj.hour)+j > HOURS.length-1){
                     continue; // class ends too late, not implemented yet
@@ -356,35 +413,88 @@ const Monte = ({username, email, changeEmail, addRegistrationBlock, classes}) =>
         </Typography>
         <Grid container spacing={1} xs={12} >
         <Grid item sm={4} xs={12} >
+            
+
             <Typography paragraph align='justify' className={classes.description}>
                 Para montar seu bloco, clique em "Adicionar Disciplina" e escolha as disciplinas desejadas.
+                Caso precise, utilize o filtro para visualizar apenas disciplinas com turmas no intervalo indicado.
                 Quando terminar de montar sua grade, clique em "Adicionar Bloco" para ir à página de encomenda de matrícula.
 
             </Typography>
+            
+            <div style={{display:'flex'}}>
+                <Typography className={classes.formText}> Filtrar por horário: </Typography>
+                <FormControl className={classes.formControl}>
+                    <InputLabel id="inputInicio">Início</InputLabel>
+                        <Select
+                        labelId="inputInicio"
+                        id="selectInicio"
+                        value={state.beginFilter}
+                        onChange={inputFilterBegin}
+                        >
+                            <MenuItem value={'h08'}>8:30</MenuItem>
+                            <MenuItem value={'h09'}>9:30</MenuItem>
+                            <MenuItem value={'h10'}>10:30</MenuItem>
+                            <MenuItem value={'h11'}>11:30</MenuItem>
+                            <MenuItem value={'h12'}>12:30</MenuItem>
+                            <MenuItem value={'h13'}>13:30</MenuItem>
+                            <MenuItem value={'h14'}>14:30</MenuItem>
+                            <MenuItem value={'h15'}>15:30</MenuItem>
+                            <MenuItem value={'h16'}>16:30</MenuItem>
+                            <MenuItem value={'h17'}>17:30</MenuItem>
+                            <MenuItem value={'h18'}>18:30</MenuItem>
+                        </Select>
+                </FormControl>
+                <FormControl className={classes.formControl}>
+                    <InputLabel id="inputFim">Fim</InputLabel>
+                        <Select
+                        labelId="inputFim"
+                        id="selectFim"
+                        value={state.endFilter}
+                        onChange={inputFilterEnd}
+                        >
+                            <MenuItem value={'h08'}>8:30</MenuItem>
+                            <MenuItem value={'h09'}>9:30</MenuItem>
+                            <MenuItem value={'h10'}>10:30</MenuItem>
+                            <MenuItem value={'h11'}>11:30</MenuItem>
+                            <MenuItem value={'h12'}>12:30</MenuItem>
+                            <MenuItem value={'h13'}>13:30</MenuItem>
+                            <MenuItem value={'h14'}>14:30</MenuItem>
+                            <MenuItem value={'h15'}>15:30</MenuItem>
+                            <MenuItem value={'h16'}>16:30</MenuItem>
+                            <MenuItem value={'h17'}>17:30</MenuItem>
+                            <MenuItem value={'h18'}>18:30</MenuItem>
+                        </Select>
+                </FormControl>    
+            </div>
 
                 <List style={{backgroundColor:'#ffffff', padding:0}}>
                     <ListItem button onClick={showSubjects}>
                     <ListItemText classes={{primary:classes.listItemText}} primary="Adicionar Disciplina" />
                         {state.openSubjects ? <ExpandLess /> : <ExpandMore />}
                     </ListItem>
-                    <Collapse in={state.openSubjects} timeout="auto" unmountOnExit style={{maxHeight: '31em', overflow: 'auto'}}>
+                    <Collapse in={state.openSubjects} timeout="auto" unmountOnExit style={{maxHeight: '28em', overflow: 'auto'}}>
                         <List disablePadding >
-                            {just3.map(subject => (
-                                <div>
-                                <ListItem button onClick={()=> showClasses(subject["Atividades de Ensino"])}>
-                                    <ListItemText  classes={{secondary:classes.listItemTextSecondary}} secondary={subject["Atividades de Ensino"]} />
-                                </ListItem>
-                                <Collapse in={state.expandButtons[subject["Atividades de Ensino"]]} timeout="auto" unmountOnExit>
-                                    <List disablePadding>
-                                    {subject.professors.map((aClass) => (
-                                        <ListItem button onMouseOver={() => showSkeleton(aClass.name,subject["Atividades de Ensino"])} onMouseLeave={() => deleteSkeleton(aClass.name,subject["Atividades de Ensino"])} onClick={() => addSubject(aClass.name,subject["Atividades de Ensino"])}>
-                                            <ListItemText secondary={aClass.name} />
-                                        </ListItem>
-                                    ))} 
-                                    </List> 
-                                </Collapse>
-                                </div>
-                            ))}
+                            {state.filtered.map(subject => (
+                                !subject.mainFilter ? 
+                                    (<div>
+                                    <ListItem button onClick={()=> showClasses(subject["Atividades de Ensino"])}>
+                                        <ListItemText  classes={{secondary:classes.listItemTextSecondary}} secondary={subject["Atividades de Ensino"]} />
+                                    </ListItem>
+                                    <Collapse in={state.expandButtons[subject["Atividades de Ensino"]]} timeout="auto" unmountOnExit>
+                                        <List disablePadding>
+                                        {subject.professors.map((aClass) => (
+                                            !aClass.filter ?
+                                            <ListItem button onMouseOver={() => showSkeleton(aClass.name,subject["Atividades de Ensino"])} onMouseLeave={() => deleteSkeleton(aClass.name,subject["Atividades de Ensino"])} onClick={() => addSubject(aClass.name,subject["Atividades de Ensino"])}>
+                                                <ListItemText secondary={aClass.name} />
+                                            </ListItem>
+                                            : null)
+                                            )} 
+                                        </List> 
+                                    </Collapse>
+                                    </div>) : null)
+                                )
+                            }
                         </List>
                     </Collapse>
                 </List>
@@ -473,18 +583,6 @@ const Monte = ({username, email, changeEmail, addRegistrationBlock, classes}) =>
   );
 
 }
-
-/*
-            <List>
-                {just3[1].professors !== undefined ? just3[1].professors.map(professor => (
-                    <ListItem button onMouseOver={() => showSkeleton(professor.name)} onMouseLeave={() => deleteSkeleton(professor.name)}>
-                        <ListItemText primary={professor.name} />
-                    </ListItem>
-                )):null}
-            </List>
-
-*/
-
 
 
 Monte.propTypes = {

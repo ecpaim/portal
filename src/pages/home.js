@@ -3,25 +3,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
+import { Typography } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 
  //takes theme defined in theme.js
  const styles = (theme) => ({
-    ...theme.general
+    ...theme.general,
+    description:{
+        width:'40%'
+    }
 });
 
 const home = ({username,email, classes}) => {
     return(
     <div className={classes.standardPage}>
         
-        <p>
-            Homepage
-        </p>
-        <p> 
-            username: {username}
-            <br/>
-            Email: {email}
-        </p>
+        <Typography variant='h5' color='secondary' paragraph >
+            Portal do aluno
+        </Typography>
+        <Typography paragraph align='justify' className={classes.description}>
+            Você está em um protótipo. Para testar a interface de matrícula, vá para a aba "Matrícula" e selecione "Monte seu Bloco".
+
+        Você também pode visualizar informações completas sobre as disciplinas e vagas oferecidas na opção "Possibilidade de Matrícula".
+        </Typography>
+        <div style={{height:'67vh'}}></div>
     </div>
   );
 
