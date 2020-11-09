@@ -99,7 +99,7 @@ const SideBar = ({classes}) => {
                   <ListItemText classes={{secondary:classes.listItemTextSecondary}} secondary="Possibilidade de Matrícula" />
                 </ListItem>
                 <ListItem button component={Link} to="/matricula/bloco">
-                  <ListItemText classes={{secondary:classes.listItemTextSecondary}} secondary="Monte seu Bloco"/>
+                  <ListItemText classes={{secondary:classes.listItemTextSecondary}} secondary="Monte sua Grade"/>
                 </ListItem>
                 <ListItem button component={Link} to="/matricula/encomenda">
                   <ListItemText classes={{secondary:classes.listItemTextSecondary}} secondary="Encomenda de Matrícula" />

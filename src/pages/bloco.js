@@ -280,7 +280,7 @@ const Monte = ({username, email, changeEmail, addRegistrationBlock, classes}) =>
                     }
                 }
                 if(!alreadyAdded && state.schedule[day][hour].subj !== ""){
-                    block.push({ name:state.schedule[day][hour].subj, classID: state.schedule[day][hour].classID });
+                    block.push({ name:state.schedule[day][hour].subj, classID: state.schedule[day][hour].classID, professor: state.schedule[day][hour].prof });
                 } 
             }
         }
@@ -409,16 +409,16 @@ const Monte = ({username, email, changeEmail, addRegistrationBlock, classes}) =>
     return(
     <div className={classes.container} >
         <Typography variant='h5' color='secondary' paragraph>
-            Monte seu Bloco
+            Monte sua Grade
         </Typography>
         <Grid container spacing={1} xs={12} >
         <Grid item sm={4} xs={12} >
             
 
             <Typography paragraph align='justify' className={classes.description}>
-                Para montar seu bloco, clique em "Adicionar Disciplina" e escolha as disciplinas desejadas.
+                Para montar sua grade, clique em "Adicionar Disciplina" e escolha as disciplinas desejadas.
                 Caso precise, utilize o filtro para visualizar apenas disciplinas com turmas no intervalo indicado.
-                Quando terminar de montar sua grade, clique em "Adicionar Bloco" para ir à página de encomenda de matrícula.
+                Quando terminar de montar sua grade, clique em "Adicionar Grade" para ir à página de encomenda de matrícula.
 
             </Typography>
             
@@ -575,7 +575,7 @@ const Monte = ({username, email, changeEmail, addRegistrationBlock, classes}) =>
                 </Table>
             </TableContainer>
             <Button variant="contained" color="secondary" size='small' className={classes.sendButton} onClick={sendBlock} >
-                <Typography>Adicionar Bloco</Typography>
+                <Typography>Adicionar Grade</Typography>
             </Button>
         </Grid>
         </Grid>

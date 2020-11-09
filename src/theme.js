@@ -2,15 +2,15 @@ export default {
     shadows: ["none"],
     palette: {
       primary: {
-        light: '#448aff',
+        light: '#ced3db',
         main: '#ffffff',
         dark: '#b0bec9',
-        contrastText: '#283593'
+        contrastText: '#285893'
       },
       secondary: {
-        light: '#5f5fc4',
-        main: '#283593',
-        dark: '#001064',
+        light: '#3172c4',
+        main: '#285893',
+        dark: '#142d4d',
         contrastText: '#ffffff'
       },
     },
@@ -27,7 +27,7 @@ export default {
           backgroundColor: 'rgb(245,245,245,0)'
         },
         listItemText: {
-          color: '#001064', /* secondary dark */
+          color: '#142d4d', /* secondary dark */
         },
         listItemTextSecondary: {
           color: '#000000'

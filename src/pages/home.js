@@ -22,7 +22,7 @@ const home = ({username,email, classes}) => {
             Portal do aluno
         </Typography>
         <Typography paragraph align='justify' className={classes.description}>
-            Você está em um protótipo. Para testar a interface de matrícula, vá para a aba "Matrícula" e selecione "Monte seu Bloco".
+            Você está em um protótipo. Para testar a interface de matrícula, vá para a aba "Matrícula" e selecione "Monte sua Grade".
 
         Você também pode visualizar informações completas sobre as disciplinas e vagas oferecidas na opção "Possibilidade de Matrícula".
         </Typography>
