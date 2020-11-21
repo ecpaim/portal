@@ -29,6 +29,8 @@ import withStyles from '@material-ui/core/styles/withStyles';
 
 import {removeRegistrationBlock} from '../redux/user/userSlice';
 
+import TimeMe from 'timeme.js';
+
 const ROWS = ['1','2','3','4','5','6','7','8','9']
 
  
@@ -293,7 +295,9 @@ const Encomenda = ({username, email, registrationBlocks, removeRegistrationBlock
                 <DialogContent>
                     
                 <DialogContentText id="alert-dialog-description">
-                    A encomenda pode ser alterada até o fim do período de matrícula.
+                    Você chegou ao fim da demo! O tempo total gasto no site foi de: <br/>
+                    {TimeMe.getTimeOnAllPagesInSeconds().reduce(( a, b) => a + b.timeOnPage, 0)} segundos
+
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>

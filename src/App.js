@@ -24,6 +24,12 @@ import {connect} from 'react-redux';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 
+import TimeMe from 'timeme.js';
+
+TimeMe.initialize({
+  idleTimeoutInSeconds: 15
+});
+
  //takes theme defined in theme.js
  const styles = (theme) => ({
   ...theme.general,
@@ -83,7 +89,7 @@ function App({username, email, classes}) {
                 <Route exact path='/matricula/encomenda' component={encomenda} />
                 <Route exact path='/matricula/possibilidade' component={possibilidade} />
               </RouterSwitch>
-            
+
         </Grid>
       </Grid>
     </Router>

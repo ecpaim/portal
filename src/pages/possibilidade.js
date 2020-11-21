@@ -19,6 +19,7 @@ import PrintIcon from '@material-ui/icons/Print';
 
 import allData from '../util/convertjson.json';
 
+
  //takes theme defined in theme.js
  const styles = (theme) => ({
     ...theme.general,
@@ -39,7 +40,6 @@ import allData from '../util/convertjson.json';
 const Possibilidade = ({username,email, classes}) => {
     return(
     <div className={classes.standardPage}>
-        
         <Typography variant='h5' color='secondary' paragraph >
             Possibilidade de Matrícula
         </Typography>
