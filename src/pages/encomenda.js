@@ -160,7 +160,7 @@ const Encomenda = ({username, email, registrationBlocks, removeRegistrationBlock
             <Table arial-label='tabela de blocos' size='small' >
                 <caption>
                     <Typography align='center' variant='body2'>Grade 2 
-                    <IconButton aria-label="delete" size="small" onClick={() => deleteBlock(0)}>
+                    <IconButton aria-label="delete" size="small" onClick={() => deleteBlock(1)}>
                         <CloseIcon fontSize="inherit" />
                     </IconButton>
                     </Typography>
@@ -204,7 +204,7 @@ const Encomenda = ({username, email, registrationBlocks, removeRegistrationBlock
             <Table arial-label='tabela de blocos' size='small' >
                 <caption>
                     <Typography align='center' variant='body2'>Grade 3 
-                    <IconButton aria-label="delete" size="small" onClick={() => deleteBlock(0)}>
+                    <IconButton aria-label="delete" size="small" onClick={() => deleteBlock(2)}>
                         <CloseIcon fontSize="inherit" />
                     </IconButton>
                     </Typography>
